@@ -599,7 +599,14 @@ export default {
 	_registerSelectionMenu() {
 		const { ContextMenu } = foundry.applications.ux;
 
-		new ContextMenu(document.body, '.journal-entry-pages, .editor-content', [
+		// The image selectors must come first: ContextMenu resolves the callback
+		// target via closest-match delegation against this selector list, so an
+		// <img> needs to be reachable as its own match, not just as a descendant
+		// of the outer container (which would always win and shadow it).
+		const selector =
+			'.journal-entry-pages img, .editor-content img, .journal-entry-pages, .editor-content';
+
+		new ContextMenu(document.body, selector, [
 			{
 				name: 'Describe',
 				icon: '<i class="fas fa-comment"></i>',
