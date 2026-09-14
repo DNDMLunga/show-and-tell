@@ -630,20 +630,19 @@ export default {
 		], {
 			eventName: 'contextmenu',
 			fixed: true,
+			jQuery: false,
 		});
 	},
 
 	/**
 	 * Resolve a ContextMenu callback/condition target down to the actual <img>
-	 * element that was right-clicked, if any. Handles both a raw HTMLElement
-	 * and a jQuery-wrapped element depending on Foundry's ContextMenu version.
-	 * @param {HTMLElement|JQuery} target
+	 * element that was right-clicked, if any.
+	 * @param {HTMLElement} target
 	 * @returns {HTMLImageElement|null}
 	 */
 	_resolveContextImage(target) {
-		const el = target instanceof HTMLElement ? target : target?.[0];
-		if (!(el instanceof HTMLElement)) return null;
-		const img = el.matches?.('img') ? el : el.closest?.('img');
+		if (!(target instanceof HTMLElement)) return null;
+		const img = target.matches('img') ? target : target.closest('img');
 		return img instanceof HTMLImageElement ? img : null;
 	},
 
