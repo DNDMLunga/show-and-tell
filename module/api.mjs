@@ -634,6 +634,15 @@ export default {
 					if (img) ShowAndTell.broadcastJournalImage({ image: img.src, title: img.alt || '' });
 				},
 			},
+			{
+				name: 'Whisper Image to…',
+				icon: '<i class="fas fa-user-secret"></i>',
+				condition: (target) => Boolean(this._resolveContextImage(target)),
+				callback: (target) => {
+					const img = this._resolveContextImage(target);
+					if (img) ShowAndTell.whisperJournalImage({ image: img.src, title: img.alt || '' });
+				},
+			},
 		], {
 			eventName: 'contextmenu',
 			fixed: true,
