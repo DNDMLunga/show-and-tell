@@ -1,0 +1,142 @@
+import { MODULE } from './const.mjs';
+
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+const { ColorField, NumberField } = foundry.data.fields;
+
+export class ShowAndTellMenu extends HandlebarsApplicationMixin(ApplicationV2) {
+	static DEFAULT_OPTIONS = {
+		id: 'show-and-tell-config',
+		tag: 'form',
+		window: {
+			contentClasses: ['standard-form'],
+			icon: 'fa-solid fa-theater-masks',
+			title: 'ST.Title',
+		},
+		position: {
+			width: 560,
+		},
+		form: {
+			handler: ShowAndTellMenu.#onSubmit,
+			closeOnSubmit: true,
+		},
+	};
+
+	static PARTS = {
+		tabs: {
+			template: 'templates/generic/tab-navigation.hbs',
+		},
+		body: {
+			template: 'modules/show-and-tell/templates/config.hbs',
+		},
+		footer: {
+			template: 'templates/generic/form-footer.hbs',
+		},
+	};
+
+	static TABS = {
+		sheet: {
+			tabs: [
+				{ id: 'appearance', icon: 'fa-regular fa-image', label: 'ST.NarrationNav' },
+				{ id: 'behavior', icon: 'fa-solid fa-microchip', label: 'ST.OthersNav' },
+				{ id: 'permissions', icon: 'fa-regular fa-address-card', label: 'Permissions' },
+			],
+			initial: 'appearance',
+		},
+	};
+
+	async _prepareContext(options) {
+		const context = await super._prepareContext(options);
+		const bgColor = game.settings.get(MODULE, 'BGColor');
+		const textColor = game.settings.get(MODULE, 'TextColor');
+		return {
+			...context,
+			FontSize: game.settings.get(MODULE, 'FontSize'),
+			WebFont: game.settings.get(MODULE, 'WebFont'),
+			TextColor: textColor,
+			TextShadow: game.settings.get(MODULE, 'TextShadow'),
+			TextCSS: game.settings.get(MODULE, 'TextCSS'),
+			Copy: game.settings.get(MODULE, 'Copy'),
+			DurationMultiplier: game.settings.get(MODULE, 'DurationMultiplier'),
+			DurationMultiplierField: new NumberField(
+				{ nullable: false, min: 0.5, max: 2, step: 0.05, label: 'ST.DurationMultiplier' },
+				{ name: 'DurationMultiplier' },
+			),
+			BGColor: bgColor,
+			BGImage: game.settings.get(MODULE, 'BGImage'),
+			NarrationStartPaused: game.settings.get(MODULE, 'NarrationStartPaused'),
+			MessageType: game.settings.get(MODULE, 'MessageType'),
+			PortraitTimeout: game.settings.get(MODULE, 'PortraitTimeout'),
+			PortraitTimeoutField: new NumberField(
+				{ nullable: false, min: 0, max: 120, step: 1, label: 'ST.PortraitTimeout' },
+				{ name: 'PortraitTimeout' },
+			),
+			JournalImageTimeout: game.settings.get(MODULE, 'JournalImageTimeout'),
+			JournalImageTimeoutField: new NumberField(
+				{ nullable: false, min: 0, max: 120, step: 1, label: 'ST.JournalImageTimeout' },
+				{ name: 'JournalImageTimeout' },
+			),
+			colors: {
+				background: {
+					field: new ColorField(
+						{ nullable: true, label: 'SCENE.FIELDS.backgroundColor.label' },
+						{ name: 'BGColor' },
+					),
+					value: bgColor,
+				},
+				text: {
+					field: new ColorField(
+						{ nullable: true, label: 'DRAWING.FIELDS.textColor.label' },
+						{ name: 'TextColor' },
+					),
+					value: textColor,
+				},
+			},
+			CHAT_MESSAGE_TYPES: {
+				0: 'Other',
+				1: 'Out of Character',
+				2: 'In Character',
+				3: 'Emote',
+			},
+			PERMShow: game.settings.get(MODULE, 'PERMShow'),
+			PERMDescribe: game.settings.get(MODULE, 'PERMDescribe'),
+			PERMNarrate: game.settings.get(MODULE, 'PERMNarrate'),
+			PERMAs: game.settings.get(MODULE, 'PERMAs'),
+			USER_ROLES: {
+				0: game.i18n.localize('USER.RoleNone'),
+				1: game.i18n.localize('USER.RolePlayer'),
+				2: game.i18n.localize('USER.RoleTrusted'),
+				3: game.i18n.localize('USER.RoleAssistant'),
+				4: game.i18n.localize('USER.RoleGamemaster'),
+			},
+			buttons: [{ type: 'submit', icon: 'fa-solid fa-floppy-disk', label: 'SETTINGS.Save' }],
+		};
+	}
+
+	/**
+	 * Persist settings from the configuration form.
+	 * @param {SubmitEvent} _event
+	 * @param {HTMLFormElement} _form
+	 * @param {FormDataExtended} formData
+	 */
+	static async #onSubmit(_event, _form, formData) {
+		const data = {
+			Copy: false,
+			NarrationStartPaused: false,
+			...formData.object,
+		};
+		for (const key of [
+			'DurationMultiplier',
+			'MessageType',
+			'PortraitTimeout',
+			'JournalImageTimeout',
+			'PERMShow',
+			'PERMDescribe',
+			'PERMNarrate',
+			'PERMAs',
+		]) {
+			data[key] = Number(data[key]);
+		}
+		for (const [key, value] of Object.entries(data)) await game.settings.set(MODULE, key, value);
+		ShowAndTell._updateContentStyle();
+	}
+}

@@ -1,0 +1,140 @@
+<div class="tab-body">
+<section class="tab scrollable {{tabs.appearance.cssClass}}" data-group="{{tabs.appearance.group}}" data-tab="{{tabs.appearance.id}}">
+	<p class="hint">{{localize "ST.AppearanceHint"}}</p>
+
+	<div class="form-group">
+		{{#with colors.background}}
+		<label>{{localize field.label}}</label>
+		{{formInput field value=value placeholder="#000000"}}
+		{{/with}}
+		<p class="hint">{{localize "ST.BGColorHint"}}</p>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "SCENE.FIELDS.background.src.label"}}</label>
+		<div class="form-fields">
+			<file-picker name="BGImage" type="imagevideo" value="{{BGImage}}" placeholder="{{localize 'File Path'}}"></file-picker>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "DRAWING.FIELDS.fontFamily.label"}}</label>
+		<div class="form-fields">
+			<file-picker name="WebFont" type="font" value="{{WebFont}}" placeholder="{{localize 'File Path'}}"></file-picker>
+		</div>
+	</div>
+
+	<div class="form-group">
+		{{#with colors.text}}
+		<label>{{localize field.label}}</label>
+		{{formInput field value=value placeholder="white"}}
+		{{/with}}
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "DRAWING.FIELDS.fontSize.label"}}</label>
+		<div class="form-fields">
+			<input type="text" name="FontSize" placeholder="28px" value="{{FontSize}}">
+		</div>
+	</div>
+
+	<div class="form-group stacked">
+		<label>{{localize "ST.TextShadow"}}</label>
+		<div class="form-fields">
+			<input type="text" name="TextShadow" placeholder="3px 3px 2px black" value="{{TextShadow}}">
+		</div>
+	</div>
+
+	<div class="form-group stacked">
+		<label>{{localize "ST.TextCSS"}}</label>
+		<div class="form-fields">
+			<input type="text" name="TextCSS" placeholder="color: white; text-shadow: 3px 3px 2px black" value="{{TextCSS}}">
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "ST.CopyButton"}}</label>
+		<div class="form-fields">
+			<input type="checkbox" name="Copy" {{checked Copy}}>
+		</div>
+	</div>
+</section>
+
+<section class="tab scrollable {{tabs.behavior.cssClass}}" data-group="{{tabs.behavior.group}}" data-tab="{{tabs.behavior.id}}">
+	<p class="hint">{{localize "ST.OthersHint"}}</p>
+
+	<div class="form-group">
+		<label>{{localize "ST.NarrationStartPaused"}}</label>
+		<div class="form-fields">
+			<input type="checkbox" name="NarrationStartPaused" {{checked NarrationStartPaused}}>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize DurationMultiplierField.label}}</label>
+		{{formInput DurationMultiplierField value=DurationMultiplier}}
+		<p class="hint">{{localize "ST.DurationMultiplierHint"}}</p>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize "ST.MessageType"}}</label>
+		<div class="form-fields">
+			<select name="MessageType" data-dtype="Number">
+				{{selectOptions CHAT_MESSAGE_TYPES selected=MessageType localize=true}}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize PortraitTimeoutField.label}}</label>
+		{{formInput PortraitTimeoutField value=PortraitTimeout}}
+		<p class="hint">{{localize "ST.PortraitTimeoutHint"}}</p>
+	</div>
+
+	<div class="form-group">
+		<label>{{localize JournalImageTimeoutField.label}}</label>
+		{{formInput JournalImageTimeoutField value=JournalImageTimeout}}
+		<p class="hint">{{localize "ST.JournalImageTimeoutHint"}}</p>
+	</div>
+</section>
+
+<section class="tab scrollable {{tabs.permissions.cssClass}}" data-group="{{tabs.permissions.group}}" data-tab="{{tabs.permissions.id}}">
+	<p class="hint">{{localize "ST.PermissionsHint"}}</p>
+
+	<div class="form-group">
+		<label>{{localize "ST.PERMShow"}}</label>
+		<div class="form-fields">
+			<select name="PERMShow" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMShow localize=true}}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>/as</label>
+		<div class="form-fields">
+			<select name="PERMAs" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMAs localize=true}}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>/describe</label>
+		<div class="form-fields">
+			<select name="PERMDescribe" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMDescribe localize=true}}
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label>/narrate</label>
+		<div class="form-fields">
+			<select name="PERMNarrate" data-dtype="Number">
+				{{selectOptions USER_ROLES selected=PERMNarrate localize=true}}
+			</select>
+		</div>
+	</div>
+</section>
+</div>

@@ -1,0 +1,43 @@
+{
+    "id": "show-and-tell",
+    "title": "Show and Tell",
+    "description": "Broadcast token portraits and journal images to players with one right-click, plus a right-click Describe/Narrate menu for selected journal text. Combines Let's Take a Look's image broadcasting with Narrator Tools' description/narration system.",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Co6",
+            "url": "https://github.com/DNDMLunga"
+        }
+    ],
+    "esmodules": [
+        "./main.mjs"
+    ],
+    "styles": [
+        "./show-and-tell.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "./lang/en.json"
+        }
+    ],
+    "packs": [
+        {
+            "name": "show-and-tell-macros",
+            "label": "Show and Tell",
+            "path": "packs/macros.db",
+            "module": "show-and-tell",
+            "type": "Macro",
+            "private": false
+        }
+    ],
+    "socket": true,
+    "compatibility": {
+        "minimum": "13.351",
+        "verified": "14.367"
+    },
+    "url": "https://github.com/DNDMLunga/show-and-tell",
+    "manifest": "https://github.com/DNDMLunga/show-and-tell/releases/latest/download/module.json",
+    "download": "https://github.com/DNDMLunga/show-and-tell/releases/download/v1.0.0/module.zip"
+}
