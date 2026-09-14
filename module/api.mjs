@@ -631,7 +631,14 @@ export default {
 				condition: (target) => Boolean(this._resolveContextImage(target)),
 				callback: (target) => {
 					const img = this._resolveContextImage(target);
-					if (img) ShowAndTell.broadcastJournalImage({ image: img.src, title: img.alt || '' });
+					// getAttribute, not the .src DOM property: .src resolves to an
+					// absolute URL on THIS client's own origin, which breaks for any
+					// other client connected through a different hostname (e.g. GM on
+					// localhost, players through a reverse-proxy/tunnel domain). The
+					// raw attribute is the original relative path, exactly like
+					// actor.img already is -- each client resolves it against its own
+					// origin when it renders the popout.
+					if (img) ShowAndTell.broadcastJournalImage({ image: img.getAttribute('src'), title: img.alt || '' });
 				},
 			},
 			{
@@ -640,7 +647,7 @@ export default {
 				condition: (target) => Boolean(this._resolveContextImage(target)),
 				callback: (target) => {
 					const img = this._resolveContextImage(target);
-					if (img) ShowAndTell.whisperJournalImage({ image: img.src, title: img.alt || '' });
+					if (img) ShowAndTell.whisperJournalImage({ image: img.getAttribute('src'), title: img.alt || '' });
 				},
 			},
 		], {
