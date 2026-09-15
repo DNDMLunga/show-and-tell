@@ -15,6 +15,24 @@
 	font-style: italic;
 }
 
+/* Pasted journal content (via Describe/Narrate) often carries its own text
+   color, meant to be legible against its ORIGINAL journal-sheet background -
+   scoped box styles (e.g. a custom ".narrate"/".warning" callout class) don't
+   apply at all once that markup lands in a chat message, but an unscoped or
+   more specific inline color on the pasted content still can, and either way
+   the plain browser/theme default text color is not guaranteed to read
+   against these dark message backgrounds. Force a legible color regardless of
+   what markup gets pasted in, the same way .narrator-chat above already does
+   for its own content - !important and the universal selector are both
+   deliberate here, since inheritance alone isn't reliable against arbitrary
+   pasted styling from any journal-styling convention, not just this world's. */
+.chat-log .message.narrator-narrative,
+.chat-log .message.narrator-narrative *,
+.chat-log .message.narrator-description,
+.chat-log .message.narrator-description * {
+	color: white !important;
+}
+
 .chat-log .message.narrator-notification {
 	background: #4f7373aa;
 	border: 2px dotted rgba(255, 255, 255, 0.2);
